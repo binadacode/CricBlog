@@ -4,7 +4,7 @@ import Home from './pages/Home.jsx'
 import Blog from './pages/Blog.jsx'
 import Layout from './pages/admin/Layout.jsx'
 import Dashboard from './pages/admin/Dashboard.jsx'
-import Listblog from './pages/admin/Listblog.jsx'
+import Listblog from './pages/admin/ListBlog.jsx'
 import Comments from './pages/admin/Comments.jsx'
 import AddBlog from './pages/admin/AddBlog.jsx'
 import Login from './components/admin/Login.jsx';
