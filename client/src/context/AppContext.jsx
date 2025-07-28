@@ -48,7 +48,7 @@ export const AppProvider = ({ children }) => {
 
   const fetchBlogs = async () => {
     try {
-      const { data } = await axios.get('/api/blog/all');
+      const { data } = await axios.get('/blog/all');
       if (data.success) {
         setBlogs(data.blogs);
       } else {
