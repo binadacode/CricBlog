@@ -1,9 +1,7 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
-import axios from 'axios';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import axios from '../api'; // Use the axios instance here
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-
-axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 const AppContext = createContext();
 
@@ -17,10 +15,8 @@ export const AppProvider = ({ children }) => {
   const updateToken = (newToken) => {
     setToken(newToken);
     if (newToken) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
       localStorage.setItem('token', newToken);
     } else {
-      delete axios.defaults.headers.common['Authorization'];
       localStorage.removeItem('token');
     }
   };
@@ -28,7 +24,11 @@ export const AppProvider = ({ children }) => {
   const fetchBlogs = async () => {
     try {
       const { data } = await axios.get('/blog/all');
-      data.success ? setBlogs(data.blogs) : toast.error(data.message);
+      if (data.success) {
+        setBlogs(data.blogs);
+      } else {
+        toast.error(data.message);
+      }
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);
     }
@@ -37,7 +37,7 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     const localToken = localStorage.getItem('token');
     if (localToken) {
-      updateToken(localToken); // ✅ set headers and token
+      updateToken(localToken);
     }
     fetchBlogs();
   }, []);
@@ -46,7 +46,7 @@ export const AppProvider = ({ children }) => {
     axios,
     navigate,
     token,
-    updateToken, // exported instead of raw setToken
+    updateToken,
     blogs,
     setBlogs,
     input,
