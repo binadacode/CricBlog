@@ -12,8 +12,13 @@ async function startServer() {
     await connectDB();
     console.log("Database connected");
 
-    // Middlewares
-    app.use(cors());
+    // Configure CORS to allow only your frontend origin
+    app.use(cors({
+      origin: 'https://cric-blog-henna.vercel.app', // <-- your frontend URL here
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    }));
+
     app.use(express.json());
 
     // Test route
