@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from '../api'; // Use the axios instance here
+import axios from '../api'; // your axios instance
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -21,6 +21,31 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  // Attach token to axios headers automatically
+  useEffect(() => {
+    // Set token from localStorage on mount
+    const localToken = localStorage.getItem('token');
+    if (localToken) {
+      updateToken(localToken);
+    }
+
+    // Add interceptor to include token in headers
+    const requestInterceptor = axios.interceptors.request.use(
+      (config) => {
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
+
+    // Cleanup interceptor on unmount
+    return () => {
+      axios.interceptors.request.eject(requestInterceptor);
+    };
+  }, [token]);
+
   const fetchBlogs = async () => {
     try {
       const { data } = await axios.get('/blog/all');
@@ -35,10 +60,6 @@ export const AppProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const localToken = localStorage.getItem('token');
-    if (localToken) {
-      updateToken(localToken);
-    }
     fetchBlogs();
   }, []);
 
