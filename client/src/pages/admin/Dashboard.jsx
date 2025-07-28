@@ -12,16 +12,24 @@ const Dashboard = () => {
     recentBlogs: [],
   });
 
+  const [loading, setLoading] = useState(false);
+
   const { axios } = useAppContext();
 
   const fetchDashboard = async () => {
+    setLoading(true);
     try {
-      const { data } = await axios.get('/api/admin/dashboard');
-      data.success
-        ? setDashboardData(data.dashboardData)
-        : toast.error(data.message);
+      // Adjust this path according to your axios baseURL
+      const { data } = await axios.get('/admin/dashboard');
+      if (data.success) {
+        setDashboardData(data.dashboardData);
+      } else {
+        toast.error(data.message);
+      }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -85,7 +93,13 @@ const Dashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {dashboardData.recentBlogs.length > 0 ? (
+            {loading ? (
+              <tr>
+                <td colSpan='5' className='text-center py-6 text-gray-500'>
+                  Loading...
+                </td>
+              </tr>
+            ) : dashboardData.recentBlogs.length > 0 ? (
               dashboardData.recentBlogs.map((blog, index) => (
                 <BlogTableItem
                   key={blog._id}

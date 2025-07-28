@@ -6,21 +6,35 @@ import toast from 'react-hot-toast';
 const Comments = () => {
   const [comments, setComments] = useState([]);
   const [filter, setFilter] = useState('Not Approved');
+  const [loading, setLoading] = useState(false);
 
   const { axios } = useAppContext();
 
   const fetchComments = async () => {
+    setLoading(true);
     try {
-      const { data } = await axios.get('/api/admin/comments');
-      data.success ? setComments(data.comments) : toast.error(data.message);
+      // Adjust the URL depending on your axios baseURL config.
+      const { data } = await axios.get('/admin/comments');
+      if (data.success) {
+        setComments(data.comments);
+      } else {
+        toast.error(data.message);
+      }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchComments();
   }, []);
+
+  // Filter once before rendering
+  const filteredComments = comments.filter((comment) =>
+    filter === 'Approved' ? comment.isApproved : !comment.isApproved
+  );
 
   return (
     <div className='flex-1 min-h-screen pt-6 md:pt-12 px-5 md:px-16 bg-blue-50/50'>
@@ -65,21 +79,21 @@ const Comments = () => {
             </tr>
           </thead>
           <tbody>
-            {comments.filter((comment) => {
-              return filter === 'Approved' ? comment.isApproved : !comment.isApproved;
-            }).length > 0 ? (
-              comments
-                .filter((comment) => {
-                  return filter === 'Approved' ? comment.isApproved : !comment.isApproved;
-                })
-                .map((comment, index) => (
-                  <CommentTableItem
-                    key={comment._id}
-                    comment={comment}
-                    index={index + 1}
-                    fetchComments={fetchComments}
-                  />
-                ))
+            {loading ? (
+              <tr>
+                <td colSpan='3' className='text-center py-6 text-gray-500'>
+                  Loading comments...
+                </td>
+              </tr>
+            ) : filteredComments.length > 0 ? (
+              filteredComments.map((comment, index) => (
+                <CommentTableItem
+                  key={comment._id}
+                  comment={comment}
+                  index={index + 1}
+                  fetchComments={fetchComments}
+                />
+              ))
             ) : (
               <tr>
                 <td colSpan='3' className='text-center py-6 text-gray-400'>
