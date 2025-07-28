@@ -8,10 +8,12 @@ export default defineConfig({
     react(), 
     tailwindcss()
   ],
-  //server: {
-    //proxy: {
-     // "/api": "http://localhost:3000"
-   // }
+  server: {
+    proxy: {
+      "/api": "https://cricblog-backend.onrender.com",
+      // Uncomment the line below to use a local backend server during development
+      // "/api": "http://localhost:5000"
+    }
   }
-  );
+  });
 
