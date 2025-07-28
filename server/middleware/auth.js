@@ -3,8 +3,7 @@ import jwt from 'jsonwebtoken';
 const auth = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    console.log('Auth header:', axios.defaults.headers.common['Authorization']);
-    
+    console.log('Auth header:', authHeader);  // <-- log incoming header here
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({ success: false, message: 'No token provided' });
