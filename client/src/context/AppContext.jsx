@@ -18,13 +18,14 @@ export const AppProvider = ({ children }) => {
     const [input, setInput] = useState('');
 
     const fetchBlogs = async () => {
-        try {
-          const {data} = await axios.get('http://localhost:3000/api/blog/all');
-          data.success ? setBlogs(data.blogs) : toast.error(data.message);
-        } catch (error) {
-          toast.error(error.message);
-        }
-      };
+  try {
+    const { data } = await axios.get('/blog/all');
+    data.success ? setBlogs(data.blogs) : toast.error(data.message);
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
+
 
     useEffect(() => {
         fetchBlogs();
