@@ -20,7 +20,7 @@ const Dashboard = () => {
     setLoading(true);
     try {
       // Adjust this path according to your axios baseURL
-      const { data } = await axios.get('/api/admin/dashboard');
+      const { data } = await axios.get('/admin/dashboard');
       if (data.success) {
         setDashboardData(data.dashboardData);
       } else {
