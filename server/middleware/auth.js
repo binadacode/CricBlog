@@ -16,8 +16,9 @@ const auth = (req, res, next) => {
   console.log('Extracted token:', token);
 
   try {
-    jwt.verify(token, process.env.JWT_SECRET);
-    console.log('Token verified successfully');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded; // ✅ attach user info
+    console.log('Token verified successfully. Decoded:', decoded);
     next();
   } catch (error) {
     console.log('Token verification failed:', error.message);
