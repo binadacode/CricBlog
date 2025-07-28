@@ -16,7 +16,7 @@ async function startServer() {
     app.use(cors());
     app.use(express.json());
 
-    // Routes
+    // Test route
     app.get('/health', (req, res) => {
       res.json({ status: "ok" });
     });
@@ -25,10 +25,13 @@ async function startServer() {
       res.send("API is working");
     });
 
+    // Routers
     app.use('/api/admin', adminRouter);
     app.use('/api/blog', blogRouter);
 
     const PORT = process.env.PORT;
+    console.log("PORT env var:", PORT);
+
     if (!PORT) {
       console.error("Error: PORT environment variable is not set.");
       process.exit(1);
