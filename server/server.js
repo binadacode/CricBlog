@@ -15,6 +15,10 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
+app.get('/health', (req, res) => {
+  res.json({ status: "ok" });
+});
+
 app.get('/', (req, res) => { res.send("API is working")})
 app.use('/api/admin', adminRouter)
 app.use('/api/blog', blogRouter)
