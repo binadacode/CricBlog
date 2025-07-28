@@ -14,7 +14,7 @@ const Comments = () => {
     setLoading(true);
     try {
       // Adjust the URL depending on your axios baseURL config.
-      const { data } = await axios.get('/admin/comments');
+      const { data } = await axios.get('/api/admin/comments');
       if (data.success) {
         setComments(data.comments);
       } else {

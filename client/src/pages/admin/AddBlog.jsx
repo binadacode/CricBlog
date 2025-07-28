@@ -52,7 +52,7 @@ const AddBlog = () => {
       formData.append('blog', JSON.stringify(blog));
       if (image) formData.append('image', image);
 
-      const { data } = await axios.post('/blog/add', formData, {
+      const { data } = await axios.post('/api/blog/add', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
