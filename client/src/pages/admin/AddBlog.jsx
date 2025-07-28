@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { assets, blogCategories } from '../../assets/assets';
 import Quill from 'quill';
 import { parse } from 'marked';
-import axios from '../../api'; // your axios instance
+import { useAppContext } from '../../context/AppContext';
 
 const AddBlog = () => {
   const [isAdding, setIsAdding] = useState(false);
@@ -17,6 +17,8 @@ const AddBlog = () => {
   const [subtitle, setSubtitle] = useState('');
   const [category, setCategory] = useState('Startup');
   const [isPublished, setIsPublished] = useState(false);
+
+  const { axios } = useAppContext(); // ✅ Use axios from context
 
   const generateContent = async () => {
     if (!title) return toast.error('Please enter a title');
