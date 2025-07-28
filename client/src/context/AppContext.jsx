@@ -14,6 +14,17 @@ export const AppProvider = ({ children }) => {
   const [blogs, setBlogs] = useState([]);
   const [input, setInput] = useState('');
 
+  const updateToken = (newToken) => {
+    setToken(newToken);
+    if (newToken) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+      localStorage.setItem('token', newToken);
+    } else {
+      delete axios.defaults.headers.common['Authorization'];
+      localStorage.removeItem('token');
+    }
+  };
+
   const fetchBlogs = async () => {
     try {
       const { data } = await axios.get('/blog/all');
@@ -24,12 +35,9 @@ export const AppProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log('API base URL:', import.meta.env.VITE_API_URL);
-
-    const token = localStorage.getItem('token');
-    if (token) {
-      setToken(token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    const localToken = localStorage.getItem('token');
+    if (localToken) {
+      updateToken(localToken); // ✅ set headers and token
     }
     fetchBlogs();
   }, []);
@@ -38,7 +46,7 @@ export const AppProvider = ({ children }) => {
     axios,
     navigate,
     token,
-    setToken,
+    updateToken, // exported instead of raw setToken
     blogs,
     setBlogs,
     input,
