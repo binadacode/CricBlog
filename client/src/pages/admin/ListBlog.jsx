@@ -1,24 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useAppContext } from '../../context/AppContext';
 import BlogTableItem from '../../components/admin/BlogTableItem';
 import toast from 'react-hot-toast';
-import { API_BASE } from '../../api';  // import the base URL
-import axios from 'axios';  // import axios for API calls
+import axios from '../../api'; // your axios instance with baseURL set
 
 const Listblog = () => {
   const [blogs, setBlogs] = useState([]);
-  const { axios } = useAppContext();
 
   const fetchBlogs = async () => {
     try {
-      const { data } = await axios.get(`${API_BASE}/admin/blogs`);
+      const { data } = await axios.get('/admin/blogs');  // relative path only
       if (data.success) {
         setBlogs(data.blogs);
       } else {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 
