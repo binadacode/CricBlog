@@ -12,17 +12,23 @@ async function startServer() {
     await connectDB();
     console.log("Database connected");
 
-    // Configure CORS for your frontend origin only
+    // CORS configuration: allow your frontend origin
     app.use(cors({
-      origin: 'https://cric-blog-henna.vercel.app', // <-- replace with your actual frontend URL
+      origin: 'https://cric-blog-henna.vercel.app', // your frontend URL here
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization'],
+      credentials: true, // if you are sending cookies or auth headers
+      preflightContinue: false, // Let cors middleware handle OPTIONS requests automatically
+      optionsSuccessStatus: 204, // Some legacy browsers choke on 204
     }));
 
     // Middleware to parse JSON bodies
     app.use(express.json());
 
-    // Logging middleware to debug incoming requests
+    // Optional: Middleware to parse URL encoded data (for form submissions)
+    app.use(express.urlencoded({ extended: true }));
+
+    // Logging middleware
     app.use((req, res, next) => {
       console.log(`Incoming ${req.method} request to ${req.url}`);
       next();
@@ -38,19 +44,15 @@ async function startServer() {
       res.send("API is working");
     });
 
-    // Mount routers
+    // Routers
     app.use('/api/admin', adminRouter);
     app.use('/api/blog', blogRouter);
 
-    const PORT = process.env.PORT;
-    if (!PORT) {
-      console.error("Error: PORT environment variable is not set.");
-      process.exit(1);
-    }
-
+    const PORT = process.env.PORT || 5000; // fallback port if not set
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
+
   } catch (err) {
     console.error("Failed to start server:", err);
     process.exit(1);
