@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://cricblog-backend.onrender.com/api',
+  baseURL: 'https://cric-blog-x3m5.vercel.app/api', // Use the new API URL
 });
 
 // Add a request interceptor to include token in headers
