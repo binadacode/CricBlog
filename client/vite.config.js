@@ -10,7 +10,7 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      "/api": "https://cricblog-backend.onrender.com",
+      "/api": "https://cric-blog-x3m5.vercel.app",
       // Uncomment the line below to use a local backend server during development
       // "/api": "http://localhost:5000"
     }
