@@ -3,6 +3,7 @@ import { useAppContext } from '../../context/AppContext';
 import BlogTableItem from '../../components/admin/BlogTableItem';
 import toast from 'react-hot-toast';
 import { API_BASE } from '../../api';  // import the base URL
+import axios from 'axios';  // import axios for API calls
 
 const Listblog = () => {
   const [blogs, setBlogs] = useState([]);
