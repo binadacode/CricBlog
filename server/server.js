@@ -19,7 +19,14 @@ async function startServer() {
       allowedHeaders: ['Content-Type', 'Authorization'],
     }));
 
-    app.use(express.json()); // Parse JSON bodies
+    // Middleware to parse JSON bodies
+    app.use(express.json());
+
+    // Logging middleware to debug incoming requests
+    app.use((req, res, next) => {
+      console.log(`Incoming ${req.method} request to ${req.url}`);
+      next();
+    });
 
     // Health check endpoint
     app.get('/health', (req, res) => {
