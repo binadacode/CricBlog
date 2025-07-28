@@ -39,8 +39,8 @@ async function startServer() {
     });
 
     // Mount routers
-    app.use('/api/admin', adminRouter);
-    app.use('/api/blog', blogRouter);
+    app.use('/admin', adminRouter);
+    app.use('/blog', blogRouter);
 
     const PORT = process.env.PORT;
     if (!PORT) {
