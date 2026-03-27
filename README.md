@@ -81,9 +81,7 @@ graph TD
      ```
    - Start the dev server: `npm run dev`
 
-## 🎥 Demo
 
-![Demo Walkthrough](./demo.webp)
 
 ## 🔮 Future Improvements
 
